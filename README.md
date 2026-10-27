@@ -34,6 +34,25 @@ cp .env.example .env        # then set DATABASE_URL
 ./.venv/bin/alembic upgrade head --sql                # print the SQL without a database
 ```
 
+## Tables
+
+| Table | What |
+|---|---|
+| `companies` | Employers; `is_verified` drives the app's "Verified" filter |
+| `jobs` | Title, description, type, work mode, city, `location` (PostGIS point), experience and salary ranges, `status`, `posted_at` |
+| `skills` | Skill names and URL-safe slugs |
+| `job_skills` | Which skills a job asks for |
+
+Indexes back every filter of the jobs API: GiST on `jobs.location` (nearby), trigram GIN on `jobs.title` (typo-tolerant search), and btree on `jobs.posted_at` and `jobs.company_id`.
+
+## Dev data
+
+```bash
+./.venv/bin/python scripts/seed_dev_jobs.py
+```
+
+Replaces all companies, skills and jobs with 30 companies and 150 jobs across Karnataka. The data is the same on every run (fixed random seed), and posting dates are spread so every filter has results (last 24 hours, 0–3 / 3–7 / 7–15 / 15–30 / 30+ days, verified and unverified, several cities). It refuses to run unless the database host is local or `pathwise-dev.*`, so it can't wipe a real database.
+
 ## Adding a change
 
 1. Add or change models in `pathwise_db/` (import new model modules in `pathwise_db/models.py` so Alembic sees them).
