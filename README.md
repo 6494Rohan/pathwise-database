@@ -42,6 +42,9 @@ cp .env.example .env        # then set DATABASE_URL
 | `jobs` | Title, description, type, work mode, city, `location` (PostGIS point), experience and salary ranges, `status`, `posted_at` |
 | `skills` | Skill names and URL-safe slugs |
 | `job_skills` | Which skills a job asks for |
+| `profiles` | One per signed-in user (`user_id` = Cognito `sub`): code, plan, name, contact, current role and location, skills, and the saved resume's S3 key and file name |
+| `profile_experiences`, `profile_educations` | The profile's entries, in `position` order; months are `YYYY-MM` text (checked) or null |
+| `resume_parse_usage` | AI resume parses per user per UTC day; the API refuses parses over its daily limits |
 
 Indexes back every filter of the jobs API: GiST on `jobs.location` (nearby), trigram GIN on `jobs.title` (typo-tolerant search), and btree on `jobs.posted_at` and `jobs.company_id`.
 

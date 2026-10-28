@@ -23,8 +23,23 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from pathwise_db.base import Base
+from pathwise_db.profiles import Profile, ProfileEducation, ProfileExperience, ProfilePlan, ResumeParseUsage
 
-__all__ = ["Base", "Company", "EmploymentType", "Job", "JobStatus", "Skill", "WorkMode", "job_skills"]
+__all__ = [
+    "Base",
+    "Company",
+    "EmploymentType",
+    "Job",
+    "JobStatus",
+    "Profile",
+    "ProfileEducation",
+    "ProfileExperience",
+    "ProfilePlan",
+    "ResumeParseUsage",
+    "Skill",
+    "WorkMode",
+    "job_skills",
+]
 
 
 class EmploymentType(enum.Enum):
